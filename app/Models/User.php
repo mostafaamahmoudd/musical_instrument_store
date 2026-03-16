@@ -67,4 +67,19 @@ class User extends Authenticatable
             self::CUSTOMER_TYPE,
         ];
     }
+
+    public function isAdmin(): bool
+    {
+        return $this->type === self::ADMIN_TYPE;
+    }
+
+    public function isCustomer(): bool
+    {
+        return $this->type === self::CUSTOMER_TYPE;
+    }
+
+    public function dashboardRouteName(): string
+    {
+        return $this->isAdmin() ? 'admin.dashboard' : 'dashboard';
+    }
 }
