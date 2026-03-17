@@ -3,6 +3,10 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\EnsureUserIsCustomer;
+use App\Http\Controllers\Admin\BuilderController;
+use App\Http\Controllers\Admin\InstrumentFamilyController;
+use App\Http\Controllers\Admin\InstrumentTypeController;
+use App\Http\Controllers\Admin\WoodController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -19,6 +23,11 @@ Route::middleware(['auth', 'verified', EnsureUserIsAdmin::class])->prefix('admin
     Route::get('/dashboard', function () {
         return view('admin.dashboard');
     })->name('dashboard');
+
+    Route::resource('instrument-families', InstrumentFamilyController::class);
+    Route::resource('builders', BuilderController::class);
+    Route::resource('instrument-types', InstrumentTypeController::class);
+    Route::resource('woods', WoodController::class);
 });
 
 Route::middleware('auth')->group(function () {
