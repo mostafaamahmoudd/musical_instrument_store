@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Admin\StoreInstrumentTypeRequest;
+use App\Http\Requests\Admin\UpdateInstrumentTypeRequest;
+use App\Models\InstrumentType;
 
 class InstrumentTypeController extends Controller
 {
@@ -12,7 +14,20 @@ class InstrumentTypeController extends Controller
      */
     public function index()
     {
-        //
+        $instrumentTypes = InstrumentType::latest()->paginate(10);
+
+        return view('admin.instrument-types.index', compact('instrumentTypes'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreInstrumentTypeRequest $request)
+    {
+        InstrumentType::create($request->validated());
+
+        return redirect()->route('admin.instrument-types.index')
+            ->with('success', 'Instrument Type created successfully.');
     }
 
     /**
@@ -20,46 +35,36 @@ class InstrumentTypeController extends Controller
      */
     public function create()
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        return view('admin.instrument-types.create');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(InstrumentType $instrumentType)
     {
-        //
+        return view('admin.instrument-types.edit', compact('instrumentType'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateInstrumentTypeRequest $request, InstrumentType $instrumentType)
     {
-        //
+        $instrumentType->update($request->validated());
+
+        return redirect()->route('admin.instrument-types.index')
+            ->with('success', 'Instrument Type updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(InstrumentType $instrumentType)
     {
-        //
+        $instrumentType->delete();
+
+        return redirect()->route('admin.instrument-types.index')
+            ->with('success', 'Instrument Type deleted successfully.');
     }
 }

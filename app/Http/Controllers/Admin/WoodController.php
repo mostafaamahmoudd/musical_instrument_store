@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\WoodRequest;
+use App\Http\Requests\Admin\StoreWoodRequest;
+use App\Http\Requests\Admin\UpdateWoodRequest;
 use App\Models\Wood;
 
 class WoodController extends Controller
@@ -13,9 +14,20 @@ class WoodController extends Controller
      */
     public function index()
     {
-        $wood = Wood::paginate(15);
+        $wood = Wood::latest()->paginate(15);
 
         return view('admin.woods.index', compact('wood'));
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreWoodRequest $request)
+    {
+        Wood::create($request->validated());
+
+        return redirect()->route('admin.woods.index')
+            ->with('success', 'Wood created successfully.');
     }
 
     /**
@@ -23,46 +35,36 @@ class WoodController extends Controller
      */
     public function create()
     {
-        return view('admin.builders.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(WoodRequest $request)
-    {
-        
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Wood $wood)
-    {
-        //
+        return view('admin.woods.create');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Wood $wood)
     {
-        //
+        return view('admin.woods.edit', compact('wood'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateWoodRequest $request, Wood $wood)
     {
-        //
+        $wood->update($request->validated());
+
+        return redirect()->route('admin.woods.index')
+            ->with('success', 'Wood updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Wood $wood)
     {
-        //
+        $wood->delete();
+
+        return redirect()->route('admin.woods.index')
+            ->with('success', 'Wood deleted successfully');
     }
 }
