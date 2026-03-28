@@ -12,7 +12,7 @@ trait InstrumentFamilyRelations
         return $this->hasMany(InstrumentType::class);
     }
 
-    public function instrumentSpecs ()
+    public function instrumentSpecs()
     {
         return $this->hasMany(InstrumentSpec::class);
     }

@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Relations\InstrumentSpecRelations;
+use Illuminate\Database\Eloquent\Model;
 
 class InstrumentSpec extends Model
 {

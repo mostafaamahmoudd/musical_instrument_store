@@ -3,10 +3,10 @@
 namespace App\Models\Relations;
 
 use App\Models\Builder;
-use App\Models\Wood;
 use App\Models\Instrument;
 use App\Models\InstrumentFamily;
 use App\Models\InstrumentType;
+use App\Models\Wood;
 
 trait InstrumentSpecRelations
 {

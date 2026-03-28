@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class InstrumentType extends Model
 {
     use InstrumentTypeRelations;
-    
+
     /**
      * The attributes that are mass assignable.
      *

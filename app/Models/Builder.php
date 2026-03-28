@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\InstrumentSpec;
 
 class Builder extends Model
 {
@@ -22,5 +21,12 @@ class Builder extends Model
     public function instrumentSpecs()
     {
         return $this->hasMany(InstrumentSpec::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean',
+        ];
     }
 }
