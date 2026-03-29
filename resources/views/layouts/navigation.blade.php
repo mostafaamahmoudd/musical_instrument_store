@@ -4,6 +4,22 @@
             <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                 {{ __('Admin Dashboard') }}
             </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('admin.builders.index')" :active="request()->routeIs('admin.builders.*')">
+                {{ __('Builders') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('admin.instrument-families.index')" :active="request()->routeIs('admin.instrument-families.*')">
+                {{ __('Families') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('admin.instrument-types.index')" :active="request()->routeIs('admin.instrument-types.*')">
+                {{ __('Types') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('admin.woods.index')" :active="request()->routeIs('admin.woods.*')">
+                {{ __('Woods') }}
+            </x-responsive-nav-link>
         @else
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}

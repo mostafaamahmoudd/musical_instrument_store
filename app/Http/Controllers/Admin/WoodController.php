@@ -14,9 +14,9 @@ class WoodController extends Controller
      */
     public function index()
     {
-        $wood = Wood::latest()->paginate(15);
+        $woods = Wood::latest()->paginate(15);
 
-        return view('admin.woods.index', compact('wood'));
+        return view('admin.woods.index', compact('woods'));
     }
 
     /**
