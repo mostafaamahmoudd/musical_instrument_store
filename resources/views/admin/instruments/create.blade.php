@@ -7,9 +7,12 @@
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6">
-                    <form method="POST" action="{{ route('admin.instruments.store') }}">
+                    <form method="POST" action="{{ route('admin.instruments.store') }}" enctype="multipart/form-data">
                         @csrf
-                        @include('admin.instruments._form', ['submitLabel' => 'Create Instrument'])
+
+                        @include('admin.instruments._form', [
+                            'submitLabel' => 'Create Instrument',
+                        ])
                     </form>
                 </div>
             </div>

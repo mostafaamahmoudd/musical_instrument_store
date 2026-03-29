@@ -4,10 +4,15 @@ namespace App\Models;
 
 use App\Models\Relations\InstrumentRelations;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Instrument extends Model
+class Instrument extends Model implements HasMedia
 {
     use InstrumentRelations;
+    use InteractsWithMedia;
 
     /*
      * code for different condition types
@@ -71,5 +76,23 @@ class Instrument extends Model
             self::USED_CONDITION,
             self::VINTAGE_CONDITION,
         ];
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection('gallery');
+    }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->fit(Fit::Crop, 300, 300)
+            ->performOnCollections('gallery')
+            ->nonQueued();
+
+        $this->addMediaConversion('preview')
+            ->fit(Fit::Contain, 1000, 1000)
+            ->performOnCollections('gallery')
+            ->nonQueued();
     }
 }

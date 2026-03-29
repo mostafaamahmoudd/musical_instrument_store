@@ -43,6 +43,9 @@ class StoreInstrumentRequest extends FormRequest
             'quantity' => ['required', 'integer', 'min:1'],
             'featured' => ['nullable', 'boolean'],
             'published_at' => ['nullable', 'date'],
+
+            'images' => ['nullable', 'array'],
+            'images.*' => ['image', 'mimes:jpg,jpeg,png,webp', 'max:5120'],
         ];
     }
 }

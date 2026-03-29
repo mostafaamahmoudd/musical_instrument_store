@@ -6,7 +6,9 @@
 <div class="space-y-8">
     <div>
         <h3 class="text-lg font-semibold text-gray-900">Specification Details</h3>
-        <p class="mt-1 text-sm text-gray-600">These fields describe the instrument itself.</p>
+        <p class="mt-1 text-sm text-gray-600">
+            These fields describe the instrument itself.
+        </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -118,7 +120,9 @@
 
     <div class="border-t pt-8">
         <h3 class="text-lg font-semibold text-gray-900">Inventory Details</h3>
-        <p class="mt-1 text-sm text-gray-600">These fields describe the actual store item.</p>
+        <p class="mt-1 text-sm text-gray-600">
+            These fields describe the actual store item.
+        </p>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -206,8 +210,46 @@
         </div>
     </div>
 
+    <div class="border-t pt-8">
+        <h3 class="text-lg font-semibold text-gray-900">Images</h3>
+        <p class="mt-1 text-sm text-gray-600">
+            Upload one or more images for this instrument.
+        </p>
+    </div>
+
+    <div>
+        <x-input-label for="images" :value="__('Upload Images')" />
+        <input id="images" name="images[]" type="file" multiple accept=".jpg,.jpeg,.png,.webp"
+            class="block mt-1 w-full text-sm text-gray-700 border border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+        <x-input-error :messages="$errors->get('images')" class="mt-2" />
+        <x-input-error :messages="$errors->get('images.*')" class="mt-2" />
+    </div>
+
+    @if (isset($instrument) && $instrument->getMedia('gallery')->count())
+        <div class="mt-6">
+            <h4 class="text-sm font-medium text-gray-900 mb-3">Existing Images</h4>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                @foreach ($instrument->getMedia('gallery') as $media)
+                    <div class="border rounded-lg p-3 bg-gray-50">
+                        <img src="{{ $media->getUrl('thumb') }}" alt="Instrument image"
+                            class="w-full h-32 object-cover rounded-md">
+
+                        <label class="mt-3 flex items-center gap-2 text-sm text-red-700">
+                            <input type="checkbox" name="delete_media[]" value="{{ $media->id }}">
+                            Delete
+                        </label>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
     <div class="flex items-center gap-3 pt-4">
         <x-primary-button>{{ $submitLabel }}</x-primary-button>
-        <a href="{{ route('admin.instruments.index') }}" class="text-sm text-gray-600 hover:text-gray-900">Cancel</a>
+
+        <a href="{{ route('admin.instruments.index') }}" class="text-sm text-gray-600 hover:text-gray-900">
+            Cancel
+        </a>
     </div>
 </div>

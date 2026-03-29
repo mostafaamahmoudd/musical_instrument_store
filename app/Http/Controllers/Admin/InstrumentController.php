@@ -24,6 +24,7 @@ class InstrumentController extends Controller
             'spec.builder',
             'spec.instrumentFamily',
             'spec.instrumentType',
+            'media',
         ])
             ->latest()
             ->paginate(10);
@@ -44,9 +45,10 @@ class InstrumentController extends Controller
      */
     public function store(StoreInstrumentRequest $request)
     {
+        $instrument = null;
         $validated = $request->validated();
 
-        DB::transaction(function () use ($validated, $request) {
+        DB::transaction(function () use ($validated, $request, &$instrument) {
             $spec = InstrumentSpec::create([
                 'instrument_family_id' => $validated['instrument_family_id'],
                 'builder_id' => $validated['builder_id'],
@@ -60,7 +62,7 @@ class InstrumentController extends Controller
                 'description' => $validated['description'] ?? null,
             ]);
 
-            Instrument::create([
+            $instrument = Instrument::create([
                 'instrument_spec_id' => $spec->id,
                 'serial_number' => $validated['serial_number'],
                 'sku' => $validated['sku'] ?? null,
@@ -77,6 +79,12 @@ class InstrumentController extends Controller
                 'updated_by' => $request->user()->id,
             ]);
         });
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $instrument->addMedia($image)->toMediaCollection('gallery');
+            }
+        }
 
         return redirect()
             ->route('admin.instruments.index')
@@ -133,6 +141,20 @@ class InstrumentController extends Controller
             ]);
         });
 
+        if (! empty($validated['delete_media'])) {
+            $instrument->media()
+                ->whereIn('id', $validated['delete_media'])
+                ->get()
+                ->each
+                ->delete();
+        }
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $instrument->addMedia($image)->toMediaCollection('gallery');
+            }
+        }
+
         return redirect()
             ->route('admin.instruments.index')
             ->with('success', 'Instrument updated successfully.');
@@ -143,6 +165,7 @@ class InstrumentController extends Controller
      */
     public function destroy(Instrument $instrument)
     {
+        $instrument->clearMediaCollection('gallery');
         $instrument->delete();
 
         return redirect()
