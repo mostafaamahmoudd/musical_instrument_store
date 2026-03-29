@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             InstrumentTypeSeeder::class,
             BuilderSeeder::class,
             WoodSeeder::class,
+            InstrumentSeeder::class,
         ]);
     }
 }

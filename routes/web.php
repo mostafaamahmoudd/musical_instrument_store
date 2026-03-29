@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\BuilderController;
 use App\Http\Controllers\Admin\InstrumentFamilyController;
 use App\Http\Controllers\Admin\InstrumentTypeController;
 use App\Http\Controllers\Admin\WoodController;
+use App\Http\Controllers\Admin\InstrumentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -28,6 +29,7 @@ Route::middleware(['auth', 'verified', EnsureUserIsAdmin::class])->prefix('admin
     Route::resource('builders', BuilderController::class);
     Route::resource('instrument-types', InstrumentTypeController::class);
     Route::resource('woods', WoodController::class);
+    Route::resource('instruments', InstrumentController::class);
 });
 
 Route::middleware('auth')->group(function () {

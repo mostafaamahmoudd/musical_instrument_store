@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Instrument extends Model
 {
     use InstrumentRelations;
-    
+
     /*
      * code for different condition types
      */
@@ -43,4 +43,33 @@ class Instrument extends Model
         'created_by',
         'updated_by',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'price' => 'decimal:2',
+            'featured' => 'boolean',
+            'published_at' => 'datetime',
+            'year_made' => 'date',
+        ];
+    }
+
+    public static function stockStatus(): array
+    {
+        return [
+            self::AVAILABLE,
+            self::RESERVED,
+            self::SOLD,
+            self::HIDDEN,
+        ];
+    }
+
+    public static function conditionTypes(): array
+    {
+        return [
+            self::NEW_CONDITION,
+            self::USED_CONDITION,
+            self::VINTAGE_CONDITION,
+        ];
+    }
 }

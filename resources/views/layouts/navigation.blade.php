@@ -1,37 +1,41 @@
-<div class="pt-2 pb-3 space-y-1">
+<div class="flex flex-wrap items-center justify-center gap-4 py-2">
     @auth
         @if (Auth::user()->isAdmin())
-            <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                 {{ __('Admin Dashboard') }}
-            </x-responsive-nav-link>
+            </x-nav-link>
 
-            <x-responsive-nav-link :href="route('admin.builders.index')" :active="request()->routeIs('admin.builders.*')">
+            <x-nav-link :href="route('admin.instruments.index')" :active="request()->routeIs('admin.instruments.*')">
+                {{ __('Instruments') }}
+            </x-nav-link>
+
+            <x-nav-link :href="route('admin.builders.index')" :active="request()->routeIs('admin.builders.*')">
                 {{ __('Builders') }}
-            </x-responsive-nav-link>
+            </x-nav-link>
 
-            <x-responsive-nav-link :href="route('admin.instrument-families.index')" :active="request()->routeIs('admin.instrument-families.*')">
+            <x-nav-link :href="route('admin.instrument-families.index')" :active="request()->routeIs('admin.instrument-families.*')">
                 {{ __('Families') }}
-            </x-responsive-nav-link>
+            </x-nav-link>
 
-            <x-responsive-nav-link :href="route('admin.instrument-types.index')" :active="request()->routeIs('admin.instrument-types.*')">
+            <x-nav-link :href="route('admin.instrument-types.index')" :active="request()->routeIs('admin.instrument-types.*')">
                 {{ __('Types') }}
-            </x-responsive-nav-link>
+            </x-nav-link>
 
-            <x-responsive-nav-link :href="route('admin.woods.index')" :active="request()->routeIs('admin.woods.*')">
+            <x-nav-link :href="route('admin.woods.index')" :active="request()->routeIs('admin.woods.*')">
                 {{ __('Woods') }}
-            </x-responsive-nav-link>
+            </x-nav-link>
         @else
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+            </x-nav-link>
         @endif
 
-        <form method="POST" action="{{ route('logout') }}">
+        <form method="POST" action="{{ route('logout') }}" class="inline">
             @csrf
 
-            <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+            <x-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
                 {{ __('Log Out') }}
-            </x-responsive-nav-link>
+            </x-nav-link>
         </form>
     @endauth
 </div>

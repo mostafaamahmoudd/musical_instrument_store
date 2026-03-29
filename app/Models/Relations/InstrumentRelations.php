@@ -7,18 +7,33 @@ use App\Models\User;
 
 trait InstrumentRelations
 {
-    public function instrumentSpec()
+    public function spec()
     {
-        return $this->belongsTo(InstrumentSpec::class);
+        return $this->belongsTo(InstrumentSpec::class, 'instrument_spec_id');
     }
 
-    public function createdBy()
+    public function instrumentSpec()
+    {
+        return $this->spec();
+    }
+
+    public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function updatedBy()
+    public function createdBy()
+    {
+        return $this->creator();
+    }
+
+    public function updater()
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    public function updatedBy()
+    {
+        return $this->updater();
     }
 }
