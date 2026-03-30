@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Relations\InstrumentRelations;
+use App\Models\Scopes\InstrumentScopes;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\Image\Enums\Fit;
@@ -13,6 +14,7 @@ class Instrument extends Model implements HasMedia
 {
     use InstrumentRelations;
     use InteractsWithMedia;
+    use InstrumentScopes;
 
     /*
      * code for different condition types
