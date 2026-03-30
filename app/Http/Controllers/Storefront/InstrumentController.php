@@ -12,7 +12,7 @@ class InstrumentController extends Controller
 {
     public function home()
     {
-        $famillies = InstrumentFamily::orderBy('name')
+        $families = InstrumentFamily::orderBy('name')
             ->get();
 
         $instruments = Instrument::with([
@@ -24,7 +24,8 @@ class InstrumentController extends Controller
             ->ofVisible()
             ->ofFeatured()
             ->latest()
-            ->paginate(10);
+            ->take(8)
+            ->get();
 
         return view('storefront.home', compact('families', 'instruments'));
     }
@@ -43,15 +44,16 @@ class InstrumentController extends Controller
             ->ofFamily($request->integer('family'))
             ->ofBuilder($request->integer('builder'))
             ->ofCondition($request->string('condition')->toString())
-            ->ofPrice($request->lowPrice, $request->highPrice)
-            ->get();
+            ->ofPrice($request->input('lowPrice'), $request->input('highPrice'));
 
         match ($sort) {
+            'price_low_high' => $query->orderBy('price'),
+            'price_high_low' => $query->orderByDesc('price'),
             'oldest' => $query->oldest(),
             default => $query->latest(),
         };
 
-        $instruments = $query->paginate(10);
+        $instruments = $query->paginate(10)->withQueryString();
 
         $families = InstrumentFamily::orderBy('name')->get();
         $builders = Builder::orderBy('name')->get();
@@ -72,14 +74,6 @@ class InstrumentController extends Controller
 
     public function show(Instrument $instrument)
     {
-        abort_unless(
-            Instrument::query()
-                ->whereKey($instrument->id)
-                ->ofVisible()
-                ->exists(),
-            404
-        );
-
         $instrument->load([
             'spec.builder',
             'spec.instrumentFamily',
@@ -89,20 +83,29 @@ class InstrumentController extends Controller
             'media',
         ]);
 
-        $related = Instrument::with([
-            'spec.builder',
-            'spec.instrumentFamily',
-            'spec.instrumentType',
-            'media'
-        ])
-            ->ofVisible()
-            ->whereKeyNot($instrument->id)
-            ->whereHas('spec', function ($query) use ($instrument) {
-                $query->where('instrument_family_id', $instrument->spec?->instrument_family_id);
-            })
-            ->latest()
-            ->take(4)
-            ->get();
+        abort_unless(
+            $instrument->published_at !== null
+            && $instrument->published_at->lte(now())
+            && $instrument->stock_status !== Instrument::HIDDEN,
+            404
+        );
+
+        $familyId = $instrument->spec?->instrument_family_id;
+
+        $related = $familyId
+            ? Instrument::with([
+                'spec.builder',
+                'spec.instrumentFamily',
+                'spec.instrumentType',
+                'media'
+            ])
+                ->ofVisible()
+                ->whereKeyNot($instrument->id)
+                ->ofFamily($familyId)
+                ->latest()
+                ->take(4)
+                ->get()
+            : Instrument::newCollection();
 
         return view('storefront.instruments.show', compact(
             'instrument',

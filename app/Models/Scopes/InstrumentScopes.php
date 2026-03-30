@@ -3,40 +3,60 @@
 namespace App\Models\Scopes;
 
 use App\Models\Instrument;
+use Illuminate\Database\Eloquent\Builder;
 
 trait InstrumentScopes
 {
-    public function scopeOfVisible($query)
+    public function scopeOfVisible(Builder $query): Builder
     {
-        return $query ? $query->where('stock_status' != Instrument::HIDDEN) : $query;
+        return $query
+            ->where('stock_status', '!=', Instrument::HIDDEN)
+            ->whereNotNull('published_at')
+            ->where('published_at', '<=', now());
     }
 
-    public function scopeOfFeatured($query)
+    public function scopeOfFeatured(Builder $query): Builder
     {
-        return $query ? $query->where('featured', true) : $query;
+        return $query->where('featured', true);
     }
 
-    public function scopeOfFamily($query, $family)
+    public function scopeOfFamily(Builder $query, ?int $family): Builder
     {
-        return $query ? $query->whereHas('spec', function ($q) use ($family) {
+        return $family ? $query->whereHas('spec', function (Builder $q) use ($family) {
             $q->where('instrument_family_id', $family);
         }) : $query;
     }
 
-    public function scopeOfBuilder($query, $builder)
+    public function scopeOfBuilder(Builder $query, ?int $builder): Builder
     {
-        return $query ? $query->whereHas('spec', function ($q) use ($builder) {
+        return $builder ? $query->whereHas('spec', function (Builder $q) use ($builder) {
             $q->where('builder_id', $builder);
         }) : $query;
     }
 
-    public function scopeOfCondition($query, $condition)
+    public function scopeOfCondition(Builder $query, ?string $condition): Builder
     {
-        return $query ? $query->where('condition', $condition) : $query;
+        return $condition ? $query->where('condition', $condition) : $query;
     }
 
-    public function scopeOfPrice($query, $lowPrice, $highPrice)
+    public function scopeOfPrice(Builder $query, $lowPrice, $highPrice): Builder
     {
-        return $query ? $query->whereBetween('price', $lowPrice, $highPrice) : $query;
+        if (
+            $lowPrice !== null && $lowPrice !== ''
+            && $highPrice !== null && $highPrice !== ''
+            && $lowPrice > $highPrice
+        ) {
+            [$lowPrice, $highPrice] = [$highPrice, $lowPrice];
+        }
+
+        if ($lowPrice !== null && $lowPrice !== '') {
+            $query->where('price', '>=', $lowPrice);
+        }
+
+        if ($highPrice !== null && $highPrice !== '') {
+            $query->where('price', '<=', $highPrice);
+        }
+
+        return $query;
     }
 }
