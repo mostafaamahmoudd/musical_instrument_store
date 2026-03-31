@@ -1,12 +1,10 @@
 <a href="{{ route('storefront.instruments.show', $instrument) }}"
-   class="block bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition">
+    class="block bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition">
     <div class="aspect-[4/3] bg-gray-100">
         @if ($instrument->getFirstMediaUrl('gallery', 'thumb'))
-            <img
-                src="{{ $instrument->getFirstMediaUrl('gallery', 'thumb') }}"
+            <img src="{{ $instrument->getFirstMediaUrl('gallery', 'thumb') }}"
                 alt="{{ trim(($instrument->spec?->builder?->name ?? '') . ' ' . ($instrument->spec?->model ?? 'Instrument')) }}"
-                class="h-full w-full object-cover"
-            >
+                class="h-full w-full object-cover">
         @else
             <div class="h-full w-full flex items-center justify-center text-sm text-gray-500">
                 No image
@@ -27,6 +25,16 @@
         <p class="mt-1 text-sm text-gray-600">
             {{ $instrument->spec?->instrumentType?->name ?? 'Type not set' }}
         </p>
+
+        <div class="mt-3 flex flex-wrap gap-2 text-xs text-gray-600">
+            @if ($instrument->spec?->topWood?->name)
+                <span class="rounded-full bg-gray-100 px-2 py-1">Top: {{ $instrument->spec->topWood->name }}</span>
+            @endif
+
+            @if ($instrument->spec?->backWood?->name)
+                <span class="rounded-full bg-gray-100 px-2 py-1">Back: {{ $instrument->spec->backWood->name }}</span>
+            @endif
+        </div>
 
         <div class="mt-4 flex items-center justify-between">
             <span class="text-lg font-bold text-gray-900">

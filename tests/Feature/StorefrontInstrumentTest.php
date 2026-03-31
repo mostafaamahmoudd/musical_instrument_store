@@ -10,6 +10,7 @@ use App\Models\InstrumentType;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 use Tests\TestCase;
 
 class StorefrontInstrumentTest extends TestCase
@@ -287,7 +288,11 @@ class StorefrontInstrumentTest extends TestCase
             'description' => $overrides['description'] ?? 'Storefront test instrument',
         ]);
 
-        return Instrument::create([
+        $publishedAt = array_key_exists('published_at', $overrides)
+            ? $overrides['published_at']
+            : now()->subHour();
+
+        $instrument = Instrument::create([
             'instrument_spec_id' => $spec->id,
             'serial_number' => $overrides['serial_number'] ?? 'SN-' . fake()->unique()->numerify('####'),
             'sku' => $overrides['sku'] ?? 'SKU-' . fake()->unique()->numerify('####'),
@@ -297,9 +302,18 @@ class StorefrontInstrumentTest extends TestCase
             'year_made' => $overrides['year_made'] ?? '2020-01-01',
             'quantity' => $overrides['quantity'] ?? 1,
             'featured' => $overrides['featured'] ?? false,
-            'published_at' => $overrides['published_at'] ?? now()->subHour(),
+            'published_at' => $publishedAt,
             'created_by' => $admin->id,
             'updated_by' => $admin->id,
         ]);
+
+        if (array_key_exists('published_at', $overrides) && $publishedAt === null) {
+            DB::table('instruments')
+                ->where('id', $instrument->id)
+                ->update(['published_at' => null]);
+            $instrument->refresh();
+        }
+
+        return $instrument;
     }
 }

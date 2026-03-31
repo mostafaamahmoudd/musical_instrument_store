@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Builder;
 use App\Models\Instrument;
 use App\Models\InstrumentFamily;
+use App\Models\InstrumentType;
+use App\Models\Wood;
 use Illuminate\Http\Request;
 
 class InstrumentController extends Controller
@@ -32,32 +34,37 @@ class InstrumentController extends Controller
 
     public function index(Request $request)
     {
-        $sort = $request->string('sort')->toString();
-
         $query = Instrument::with([
             'spec.builder',
             'spec.instrumentFamily',
             'spec.instrumentType',
+            'spec.backWood',
+            'spec.topWood',
             'media',
         ])
             ->ofVisible()
             ->ofFamily($request->integer('family'))
+            ->ofType($request->integer('type'))
             ->ofBuilder($request->integer('builder'))
+            ->ofTopWood($request->integer('top_wood'))
+            ->ofBackWood($request->integer('back_wood'))
             ->ofCondition($request->string('condition')->toString())
-            ->ofPrice($request->input('lowPrice'), $request->input('highPrice'));
-
-        match ($sort) {
-            'price_low_high' => $query->orderBy('price'),
-            'price_high_low' => $query->orderByDesc('price'),
-            'oldest' => $query->oldest(),
-            default => $query->latest(),
-        };
+            ->ofStock($request->string('stock')->toString())
+            ->ofPrice(
+                $request->input('price_min', $request->input('lowPrice')),
+                $request->input('price_max', $request->input('highPrice'))
+            )
+            ->ofSort($request->string('sort')->toString())
+            ->ofSearch($request->query('q'));
 
         $instruments = $query->paginate(10)->withQueryString();
 
         $families = InstrumentFamily::orderBy('name')->get();
         $builders = Builder::orderBy('name')->get();
+        $types = InstrumentType::orderBy('name')->get();
+        $woods = Wood::orderBy('name')->get();
         $conditions = Instrument::conditionTypes();
+        $stockStatuses = Instrument::stockStatus();
 
         $currentFamily = $request->integer('family')
             ? InstrumentFamily::find($request->integer('family'))
@@ -67,7 +74,10 @@ class InstrumentController extends Controller
             'instruments',
             'families',
             'builders',
+            'types',
+            'woods',
             'conditions',
+            'stockStatuses',
             'currentFamily'
         ));
     }
@@ -85,8 +95,8 @@ class InstrumentController extends Controller
 
         abort_unless(
             $instrument->published_at !== null
-            && $instrument->published_at->lte(now())
-            && $instrument->stock_status !== Instrument::HIDDEN,
+                && $instrument->published_at->lte(now())
+                && $instrument->stock_status !== Instrument::HIDDEN,
             404
         );
 

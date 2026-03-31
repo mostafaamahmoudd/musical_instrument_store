@@ -27,6 +27,13 @@ trait InstrumentScopes
         }) : $query;
     }
 
+    public function scopeOfType(Builder $query, ?int $type): Builder
+    {
+        return $type ? $query->whereHas('spec', function (Builder $q) use ($type) {
+            $q->where('instrument_type_id', $type);
+        }) : $query;
+    }
+
     public function scopeOfBuilder(Builder $query, ?int $builder): Builder
     {
         return $builder ? $query->whereHas('spec', function (Builder $q) use ($builder) {
@@ -37,6 +44,25 @@ trait InstrumentScopes
     public function scopeOfCondition(Builder $query, ?string $condition): Builder
     {
         return $condition ? $query->where('condition', $condition) : $query;
+    }
+
+    public function scopeOfTopWood(Builder $query, ?int $wood): Builder
+    {
+        return $wood ? $query->whereHas('spec', function (Builder $q) use ($wood) {
+            $q->where('top_wood_id', $wood);
+        }) : $query;
+    }
+
+    public function scopeOfBackWood(Builder $query, ?int $wood): Builder
+    {
+        return $wood ? $query->whereHas('spec', function (Builder $q) use ($wood) {
+            $q->where('back_wood_id', $wood);
+        }) : $query;
+    }
+
+    public function scopeOfStock(Builder $query, ?string $stock): Builder
+    {
+        return $stock ? $query->where('stock_status', $stock) : $query;
     }
 
     public function scopeOfPrice(Builder $query, $lowPrice, $highPrice): Builder
@@ -58,5 +84,25 @@ trait InstrumentScopes
         }
 
         return $query;
+    }
+
+    public function scopeOfSort(Builder $query, $sort): Builder
+    {
+        return $sort ? match ($sort) {
+            'price_low_high' => $query->orderBy('price'),
+            'price_high_low' => $query->orderByDesc('price'),
+            'oldest' => $query->oldest(),
+            default => $query->latest(),
+        } : $query;
+    }
+
+    public function scopeOfSearch(Builder $query, $search): Builder
+    {
+        return $search ? $query->whereHas('spec', function (Builder $specQuery) use ($search) {
+            $specQuery->where('model', 'like', "%{$search}%")
+                ->orWhere('style', 'like', "%{$search}%")
+                ->orWhere('finish', 'like', "%{$search}%")
+                ->orWhere('description', 'like', "%{$search}%");
+        }) : $query;
     }
 }
