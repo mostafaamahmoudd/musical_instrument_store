@@ -2,8 +2,11 @@
 
 namespace App\Models\Relations;
 
+use App\Models\Inquiry;
 use App\Models\InstrumentSpec;
+use App\Models\Reservation;
 use App\Models\User;
+use App\Models\WishlistItem;
 
 trait InstrumentRelations
 {
@@ -35,5 +38,20 @@ trait InstrumentRelations
     public function updatedBy()
     {
         return $this->updater();
+    }
+
+    public function wishlistItems()
+    {
+        return $this->hasMany(WishlistItem::class);
+    }
+
+    public function inquiries()
+    {
+        return $this->hasMany(Inquiry::class);
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
     }
 }
