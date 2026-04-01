@@ -25,8 +25,24 @@
                 {{ __('Woods') }}
             </x-nav-link>
         @else
+            <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
+                {{ __('Home') }}
+            </x-nav-link>
+
+            <x-nav-link :href="route('storefront.instruments.index')" :active="request()->routeIs('storefront.instruments.*')">
+                {{ __('Search') }}
+            </x-nav-link>
+
+            <x-nav-link :href="route('storefront.wishlist.index')" :active="request()->routeIs('storefront.wishlist.*')">
+                {{ __('Wishlist') }}
+            </x-nav-link>
+
             <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-nav-link>
+
+            <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.*')">
+                {{ __('Profile') }}
             </x-nav-link>
         @endif
 
@@ -38,4 +54,16 @@
             </x-nav-link>
         </form>
     @endauth
+
+    @guest
+        <x-nav-link :href="route('login')" :active="request()->routeIs('login')">
+            {{ __('Log In') }}
+        </x-nav-link>
+
+        @if (Route::has('register'))
+            <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
+                {{ __('Register') }}
+            </x-nav-link>
+        @endif
+    @endguest
 </div>

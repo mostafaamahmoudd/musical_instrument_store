@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\InstrumentTypeController;
 use App\Http\Controllers\Admin\WoodController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Storefront\InstrumentController;
+use App\Http\Controllers\Storefront\WishlistController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use App\Http\Middleware\EnsureUserIsCustomer;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::get('/wishlist', [WishlistController::class, 'index'])
+        ->name('storefront.wishlist.index');
+
+    Route::post('/wishlist/{instrument}', [WishlistController::class, 'store'])
+        ->name('storefront.wishlist.store');
+
+    Route::delete('/wishlist/{instrument}', [WishlistController::class, 'destroy'])
+        ->name('storefront.wishlist.destroy');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';

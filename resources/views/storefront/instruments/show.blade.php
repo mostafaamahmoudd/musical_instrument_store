@@ -66,9 +66,13 @@
                                 {{ $instrument->spec?->instrumentType?->name ?? 'Type not set' }}
                             </p>
 
-                            <p class="mt-4 text-2xl font-bold text-gray-900">
-                                {{ number_format((float) $instrument->price, 2) }}
-                            </p>
+                            <div class="mt-4 flex flex-wrap items-center gap-3">
+                                <p class="text-2xl font-bold text-gray-900">
+                                    {{ number_format((float) $instrument->price, 2) }}
+                                </p>
+
+                                @include('storefront.inventory.partials.wishlist-button', ['instrument' => $instrument])
+                            </div>
                         </div>
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
