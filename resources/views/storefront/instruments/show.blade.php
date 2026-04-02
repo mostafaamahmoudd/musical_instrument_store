@@ -19,6 +19,12 @@
 
     <div class="py-10">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
+            @if (session('success'))
+                <div class="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+                    {{ session('success') }}
+                </div>
+            @endif
+
             <div class="bg-white shadow-sm sm:rounded-lg">
                 <div class="p-8 grid grid-cols-1 lg:grid-cols-2 gap-10">
                     <div>
@@ -72,6 +78,18 @@
                                 </p>
 
                                 @include('storefront.inventory.partials.wishlist-button', ['instrument' => $instrument])
+
+                                @auth
+                                    <a href="{{ route('storefront.inquiries.create', $instrument) }}"
+                                        class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+                                        Send inquiry
+                                    </a>
+                                @else
+                                    <a href="{{ route('login') }}"
+                                        class="inline-flex items-center rounded-md border border-indigo-200 px-4 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-50">
+                                        Log in to inquire
+                                    </a>
+                                @endauth
                             </div>
                         </div>
 

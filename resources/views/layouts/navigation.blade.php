@@ -9,6 +9,10 @@
                 {{ __('Instruments') }}
             </x-nav-link>
 
+            <x-nav-link :href="route('admin.inquiries.index')" :active="request()->routeIs('admin.inquiries.*')">
+                {{ __('Inquiries') }}
+            </x-nav-link>
+
             <x-nav-link :href="route('admin.builders.index')" :active="request()->routeIs('admin.builders.*')">
                 {{ __('Builders') }}
             </x-nav-link>
@@ -35,6 +39,10 @@
 
             <x-nav-link :href="route('storefront.wishlist.index')" :active="request()->routeIs('storefront.wishlist.*')">
                 {{ __('Wishlist') }}
+            </x-nav-link>
+
+            <x-nav-link :href="route('storefront.inquiries.index')" :active="request()->routeIs('storefront.inquiries.*')">
+                {{ __('Inquiries') }}
             </x-nav-link>
 
             <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">

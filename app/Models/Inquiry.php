@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use App\Models\Relations\InquiryRelations;
+use App\Models\Scopes\InquiryScopes;
 use Illuminate\Database\Eloquent\Model;
 
 class Inquiry extends Model
 {
     use InquiryRelations;
+    use InquiryScopes;
     
     /*
      * code for different statuses

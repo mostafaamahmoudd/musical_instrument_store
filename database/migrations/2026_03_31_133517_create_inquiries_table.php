@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('inquiries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('assigned_admin_id')->constrained('users');
+            $table->foreignId('assigned_admin_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('instrument_id')->constrained('instruments')->onDelete('cascade');
             $table->string('name');
             $table->string('email');
