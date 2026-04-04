@@ -37,7 +37,7 @@ class ReservationController extends Controller
         $this->ensureReservable($instrument);
 
         $instrument->load([
-            'primaryImage',
+            'media',
             'spec.builder',
             'spec.instrumentType',
             'spec.instrumentFamily',
@@ -64,7 +64,7 @@ class ReservationController extends Controller
 
         if ($existing) {
             return redirect()
-                ->route('storefront.inventory.show', $instrument)
+                ->route('storefront.instruments.show', $instrument)
                 ->with('error', 'You already have an active reservation request for this instrument.');
         }
 
@@ -77,7 +77,7 @@ class ReservationController extends Controller
         ]);
 
         return redirect()
-            ->route('storefront.inventory.show', $instrument)
+            ->route('storefront.instruments.show', $instrument)
             ->with('success', 'Your reservation request has been submitted.');
     }
 

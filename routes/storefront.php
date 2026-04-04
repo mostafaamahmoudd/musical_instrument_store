@@ -1,8 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Storefront\InstrumentController;
 use App\Http\Controllers\Storefront\InquiryController as StorefrontInquiryController;
+use App\Http\Controllers\Storefront\InstrumentController;
+use App\Http\Controllers\Storefront\ReservationController;
 use App\Http\Controllers\Storefront\WishlistController;
 use App\Http\Middleware\EnsureUserIsCustomer;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // wishlist
     Route::get('/wishlist', [WishlistController::class, 'index'])
         ->name('storefront.wishlist.index');
 
@@ -35,6 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/wishlist/{instrument}', [WishlistController::class, 'destroy'])
         ->name('storefront.wishlist.destroy');
 
+    // inquiries
     Route::get('/inquiries', [StorefrontInquiryController::class, 'index'])
         ->name('storefront.inquiries.index');
 
@@ -46,4 +49,14 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/inventory/{instrument}/inquiries', [StorefrontInquiryController::class, 'store'])
         ->name('storefront.inquiries.store');
+
+    // reservations
+    Route::get('/reservations', [ReservationController::class, 'index'])
+        ->name('storefront.reservations.index');
+
+    Route::get('/inventory/{instrument}/reservations/create', [ReservationController::class, 'create'])
+        ->name('storefront.reservations.create');
+
+    Route::post('/inventory/{instrument}/reservations', [ReservationController::class, 'store'])
+        ->name('storefront.reservations.store');
 });

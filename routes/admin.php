@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\InquiryController;
 use App\Http\Controllers\Admin\InstrumentController as AdminInstrumentController;
 use App\Http\Controllers\Admin\InstrumentFamilyController;
 use App\Http\Controllers\Admin\InstrumentTypeController;
+use App\Http\Controllers\Admin\ReservationController;
 use App\Http\Controllers\Admin\WoodController;
 use App\Http\Middleware\EnsureUserIsAdmin;
 use Illuminate\Support\Facades\Route;
@@ -26,4 +27,11 @@ Route::middleware(['auth', 'verified', EnsureUserIsAdmin::class])
         Route::get('/inquiries', [InquiryController::class, 'index'])->name('inquiries.index');
         Route::get('/inquiries/{inquiry}', [InquiryController::class, 'show'])->name('inquiries.show');
         Route::patch('/inquiries/{inquiry}', [InquiryController::class, 'update'])->name('inquiries.update');
+
+        Route::get('/reservations', [ReservationController::class, 'index'])
+            ->name('reservations.index');
+        Route::get('/reservations/{reservation}', [ReservationController::class, 'show'])
+            ->name('reservations.show');
+        Route::patch('/reservations/{reservation}', [ReservationController::class, 'update'])
+            ->name('reservations.update');
     });

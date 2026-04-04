@@ -84,6 +84,13 @@
                                         class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
                                         Send inquiry
                                     </a>
+
+                                    @if ($instrument->stock_status === \App\Models\Instrument::AVAILABLE)
+                                        <a href="{{ route('storefront.reservations.create', $instrument) }}"
+                                            class="inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">
+                                            Request reservation
+                                        </a>
+                                    @endif
                                 @else
                                     <a href="{{ route('login') }}"
                                         class="inline-flex items-center rounded-md border border-indigo-200 px-4 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-50">

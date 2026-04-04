@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('instrument_id')->constrained('instruments')->onDelete('cascade');
             $table->string('status')->default('pending');
-            $table->timestamp('reserved_until');
+            $table->timestamp('reserved_until')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
 
