@@ -35,6 +35,10 @@
             <p class="mt-2 text-sm text-slate-600">
                 {{ $user->isAdmin() ? 'Admin panel' : 'Customer account' }}
             </p>
+        @else
+            <p class="mt-2 text-sm text-slate-600">
+                Guest access
+            </p>
         @endauth
     </div>
 
@@ -96,6 +100,17 @@
                     Register
                 </a>
             @endif
+
+            <a
+                href="{{ route('home') }}"
+                @class([
+                    'flex items-center rounded-xl px-4 py-3 text-sm font-medium transition',
+                    'bg-slate-900 text-white shadow-sm' => request()->routeIs('home'),
+                    'text-slate-600 hover:bg-slate-100 hover:text-slate-900' => ! request()->routeIs('home'),
+                ])
+            >
+                Browse Storefront
+            </a>
         </nav>
     @endauth
 </div>
