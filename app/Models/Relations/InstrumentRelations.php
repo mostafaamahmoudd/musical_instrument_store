@@ -61,9 +61,4 @@ trait InstrumentRelations
     {
         return $this->hasMany(PriceHistory::class);
     }
-
-    public function auditLogs()
-    {
-        return $this->morphMany(AuditLog::class, 'auditable');
-    }
 }

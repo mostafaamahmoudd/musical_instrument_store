@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasAuditLogs;
 use App\Models\Relations\InstrumentTypeRelations;
 use Illuminate\Database\Eloquent\Model;
 
 class InstrumentType extends Model
 {
+    use HasAuditLogs;
     use InstrumentTypeRelations;
 
     /**

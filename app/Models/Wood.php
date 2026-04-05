@@ -2,10 +2,15 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasAuditLogs;
+use App\Models\Relations\WoodRelations;
 use Illuminate\Database\Eloquent\Model;
 
 class Wood extends Model
 {
+    use HasAuditLogs;
+    use WoodRelations;
+
     /**
      * The table associated with the model.
      *
@@ -22,14 +27,4 @@ class Wood extends Model
         'name',
         'slug',
     ];
-
-    public function backWoodSpecs()
-    {
-        return $this->hasMany(InstrumentSpec::class, 'back_wood_id');
-    }
-
-    public function topWoodSpecs()
-    {
-        return $this->hasMany(InstrumentSpec::class, 'top_wood_id');
-    }
 }
