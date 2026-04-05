@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PriceHistory extends Model
 {
     use PriceHistoryRelations;
+
     /**
      * The attributes that are mass assignable.
      *

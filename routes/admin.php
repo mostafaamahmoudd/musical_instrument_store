@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BuilderController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InquiryController;
 use App\Http\Controllers\Admin\InstrumentController as AdminInstrumentController;
 use App\Http\Controllers\Admin\InstrumentFamilyController;
@@ -14,9 +15,7 @@ Route::middleware(['auth', 'verified', EnsureUserIsAdmin::class])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
         Route::resource('instrument-families', InstrumentFamilyController::class);
         Route::resource('builders', BuilderController::class);
