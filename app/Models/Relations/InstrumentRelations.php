@@ -4,6 +4,7 @@ namespace App\Models\Relations;
 
 use App\Models\Inquiry;
 use App\Models\InstrumentSpec;
+use App\Models\PriceHistory;
 use App\Models\Reservation;
 use App\Models\User;
 use App\Models\WishlistItem;
@@ -53,5 +54,15 @@ trait InstrumentRelations
     public function reservations()
     {
         return $this->hasMany(Reservation::class);
+    }
+
+    public function priceHistories()
+    {
+        return $this->hasMany(PriceHistory::class);
+    }
+
+    public function auditable()
+    {
+        return $this->morphTo();
     }
 }
