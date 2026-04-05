@@ -60,9 +60,4 @@ trait InstrumentRelations
     {
         return $this->hasMany(PriceHistory::class);
     }
-
-    public function auditable()
-    {
-        return $this->morphTo();
-    }
 }

@@ -2,21 +2,26 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasAuditLogs;
 use App\Models\Relations\InquiryRelations;
 use App\Models\Scopes\InquiryScopes;
 use Illuminate\Database\Eloquent\Model;
 
 class Inquiry extends Model
 {
+    use HasAuditLogs;
     use InquiryRelations;
     use InquiryScopes;
-    
+
     /*
      * code for different statuses
      */
     const NEW = 'new';
+
     const IN_PROGRESS = 'in_progress';
+
     const CLOSED = 'closed';
+
     const SPAM = 'spam';
 
     /**

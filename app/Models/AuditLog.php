@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class AuditLog extends Model
 {
     /**
+     * Code for diferent action types.
+     */
+    const CREATED = 'created';
+    const UPDATED = 'updated';
+    const DELETED = 'deleted';
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
@@ -31,7 +38,7 @@ class AuditLog extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function auditable(): MorphTo
+    public function auditable()
     {
         return $this->morphTo();
     }

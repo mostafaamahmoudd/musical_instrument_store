@@ -2,33 +2,40 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasAuditLogs;
 use App\Models\Relations\InstrumentRelations;
 use App\Models\Scopes\InstrumentScopes;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\MediaLibrary\HasMedia;
 use Spatie\Image\Enums\Fit;
+use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Instrument extends Model implements HasMedia
 {
+    use HasAuditLogs;
     use InstrumentRelations;
-    use InteractsWithMedia;
     use InstrumentScopes;
+    use InteractsWithMedia;
 
     /*
      * code for different condition types
      */
     const NEW_CONDITION = 'new';
+
     const USED_CONDITION = 'used';
+
     const VINTAGE_CONDITION = 'vintage';
 
     /*
      * code for different stock statuses
      */
     const AVAILABLE = 'available';
+
     const RESERVED = 'reserved';
+
     const SOLD = 'sold';
+
     const HIDDEN = 'hidden';
 
     /**

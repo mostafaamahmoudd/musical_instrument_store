@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasAuditLogs;
 use App\Models\Relations\ReservationRelations;
 use App\Models\Scopes\ReservationScopes;
 use Illuminate\Database\Eloquent\Model;
 
 class Reservation extends Model
 {
+    use HasAuditLogs;
     use ReservationRelations;
     use ReservationScopes;
 
