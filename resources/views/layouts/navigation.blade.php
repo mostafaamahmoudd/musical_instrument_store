@@ -12,6 +12,10 @@
             <x-nav-link :href="route('admin.inquiries.index')" :active="request()->routeIs('admin.inquiries.*')">
                 {{ __('Inquiries') }}
             </x-nav-link>
+            
+            <x-nav-link :href="route('admin.reservations.index')" :active="request()->routeIs('admin.reservations.*')">
+                {{ __('Reservations') }}
+            </x-nav-link>
 
             <x-nav-link :href="route('admin.builders.index')" :active="request()->routeIs('admin.builders.*')">
                 {{ __('Builders') }}
@@ -39,6 +43,10 @@
 
             <x-nav-link :href="route('storefront.wishlist.index')" :active="request()->routeIs('storefront.wishlist.*')">
                 {{ __('Wishlist') }}
+            </x-nav-link>
+            
+            <x-nav-link :href="route('storefront.reservations.index')" :active="request()->routeIs('storefront.reservations.*')">
+                {{ __('Reservations') }}
             </x-nav-link>
 
             <x-nav-link :href="route('storefront.inquiries.index')" :active="request()->routeIs('storefront.inquiries.*')">
