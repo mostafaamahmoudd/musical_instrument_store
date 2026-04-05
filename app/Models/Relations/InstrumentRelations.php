@@ -4,6 +4,7 @@ namespace App\Models\Relations;
 
 use App\Models\Inquiry;
 use App\Models\InstrumentSpec;
+use App\Models\AuditLog;
 use App\Models\PriceHistory;
 use App\Models\Reservation;
 use App\Models\User;
@@ -61,8 +62,8 @@ trait InstrumentRelations
         return $this->hasMany(PriceHistory::class);
     }
 
-    public function auditable()
+    public function auditLogs()
     {
-        return $this->morphTo();
+        return $this->morphMany(AuditLog::class, 'auditable');
     }
 }
