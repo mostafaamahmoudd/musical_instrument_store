@@ -4,10 +4,12 @@ namespace App\Models;
 
 use App\Models\Concerns\HasAuditLogs;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Builder extends Model
 {
     use HasAuditLogs;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.

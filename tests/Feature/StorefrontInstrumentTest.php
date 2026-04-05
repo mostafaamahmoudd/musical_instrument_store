@@ -290,7 +290,7 @@ class StorefrontInstrumentTest extends TestCase
 
         $publishedAt = array_key_exists('published_at', $overrides)
             ? $overrides['published_at']
-            : now()->subHour();
+            : null;
 
         $instrument = Instrument::create([
             'instrument_spec_id' => $spec->id,

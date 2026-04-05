@@ -72,6 +72,10 @@ class AuditableObserver
 
     protected function shouldAudit(Model $model): bool
     {
+        if (! auth()->check()) {
+            return false;
+        }
+
         if (property_exists($model, 'auditEnabled') && $model->auditEnabled === false) {
             return false;
         }

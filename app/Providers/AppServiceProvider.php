@@ -11,7 +11,6 @@ use App\Models\Reservation;
 use App\Models\Wood;
 use App\Observers\AuditableObserver;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use App\Models\Instrument;
 use App\Observers\InstrumentObserver;
 use Illuminate\Support\ServiceProvider;
 
