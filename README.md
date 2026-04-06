@@ -37,16 +37,6 @@ This is a proof of concept focused on modeling the separation between descriptiv
 **Screenshots**
 Screenshots live in `docs/screenshots/`.
 
-- `docs/screenshots/storefront-home-light.png`
-- `docs/screenshots/storefront-home-dark.png`
-- `docs/screenshots/inventory-search.png`
-- `docs/screenshots/instrument-details.png`
-- `docs/screenshots/wishlist.png`
-- `docs/screenshots/inquiry-form.png`
-- `docs/screenshots/reservation-form.png`
-- `docs/screenshots/admin-dashboard.png`
-- `docs/screenshots/admin-instruments.png`
-
 ![Storefront Home Light](docs/screenshots/storefront-home-light.png)
 ![Storefront Home Dark](docs/screenshots/storefront-home-dark.png)
 ![Inventory Search](docs/screenshots/inventory-search.png)
