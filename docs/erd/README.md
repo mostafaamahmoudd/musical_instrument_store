@@ -1,7 +1,7 @@
 # ERD Assets
 
 Current ERD:
-![ERD](docs/erd/erd.png)
+![ERD](erd.png)
 
 DBDiagram source:
 
