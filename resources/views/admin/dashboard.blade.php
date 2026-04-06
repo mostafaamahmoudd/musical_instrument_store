@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-layouts.admin>
     <x-slot name="header">
         <div>
             <p class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500">Admin Dashboard</p>
@@ -6,8 +6,8 @@
         </div>
     </x-slot>
 
-    <div class="space-y-8 px-4 py-8 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between">
+    <div class="space-y-8">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <h1 class="text-2xl font-bold text-slate-900">Dashboard</h1>
                 <p class="mt-1 text-sm text-slate-600">
@@ -15,58 +15,48 @@
                 </p>
             </div>
 
-            <div class="flex gap-3">
-                <a href="{{ route('admin.instruments.index') }}"
-                   class="inline-flex items-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">
+            <div class="flex flex-wrap gap-3">
+                <x-ui.button href="{{ route('admin.instruments.index') }}">
                     Manage Instruments
-                </a>
+                </x-ui.button>
 
-                <a href="{{ route('admin.inquiries.index') }}"
-                   class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50">
+                <x-ui.button href="{{ route('admin.inquiries.index') }}" variant="secondary">
                     View Inquiries
-                </a>
+                </x-ui.button>
             </div>
         </div>
 
         <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
-            <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <x-ui.card padding="sm">
                 <p class="text-sm font-medium text-slate-500">Total instruments</p>
                 <p class="mt-3 text-3xl font-bold text-slate-900">{{ number_format($metrics['total_instruments']) }}</p>
-            </div>
+            </x-ui.card>
 
-            <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <x-ui.card padding="sm">
                 <p class="text-sm font-medium text-slate-500">Published instruments</p>
                 <p class="mt-3 text-3xl font-bold text-slate-900">{{ number_format($metrics['published_instruments']) }}</p>
-            </div>
+            </x-ui.card>
 
-            <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <x-ui.card padding="sm">
                 <p class="text-sm font-medium text-slate-500">Available instruments</p>
                 <p class="mt-3 text-3xl font-bold text-emerald-600">{{ number_format($metrics['available_instruments']) }}</p>
-            </div>
+            </x-ui.card>
 
-            <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <x-ui.card padding="sm">
                 <p class="text-sm font-medium text-slate-500">Pending inquiries</p>
                 <p class="mt-3 text-3xl font-bold text-amber-600">{{ number_format($metrics['pending_inquiries']) }}</p>
-            </div>
+            </x-ui.card>
 
-            <div class="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+            <x-ui.card padding="sm">
                 <p class="text-sm font-medium text-slate-500">Pending reservations</p>
                 <p class="mt-3 text-3xl font-bold text-sky-600">{{ number_format($metrics['pending_reservations']) }}</p>
-            </div>
+            </x-ui.card>
         </div>
 
         <div class="grid gap-6 xl:grid-cols-2">
-            <section class="rounded-xl border border-slate-200 bg-white shadow-sm">
-                <div class="border-b border-slate-200 px-5 py-4">
-                    <h2 class="text-lg font-semibold text-slate-900">Latest audit activity</h2>
-                    <p class="mt-1 text-sm text-slate-500">
-                        Recent create, update, and delete actions from admin workflows.
-                    </p>
-                </div>
-
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-slate-200">
-                        <thead class="bg-slate-50">
+            <x-ui.card title="Latest audit activity" description="Recent create, update, and delete actions from admin workflows." padding="none">
+                <x-ui.table>
+                    <x-slot name="head">
                         <tr>
                             <th class="px-5 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
                                 User
@@ -81,8 +71,8 @@
                                 When
                             </th>
                         </tr>
-                        </thead>
-                        <tbody class="divide-y divide-slate-200 bg-white">
+                    </x-slot>
+                    <x-slot name="body">
                         @forelse ($latestAuditLogs as $log)
                             <tr>
                                 <td class="px-5 py-4 text-sm text-slate-700">
@@ -90,15 +80,9 @@
                                 </td>
 
                                 <td class="px-5 py-4">
-                                    <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-medium
-                                        @class([
-                                            'bg-emerald-100 text-emerald-700' => $log->action === 'created',
-                                            'bg-amber-100 text-amber-700' => $log->action === 'updated',
-                                            'bg-rose-100 text-rose-700' => $log->action === 'deleted',
-                                            'bg-slate-100 text-slate-700' => ! in_array($log->action, ['created', 'updated', 'deleted']),
-                                        ])">
+                                    <x-ui.badge :status="$log->action">
                                         {{ ucfirst($log->action) }}
-                                    </span>
+                                    </x-ui.badge>
                                 </td>
 
                                 <td class="px-5 py-4 text-sm text-slate-700">
@@ -117,10 +101,9 @@
                                 </td>
                             </tr>
                         @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </section>
+                    </x-slot>
+                </x-ui.table>
+            </x-ui.card>
 
             <section class="rounded-xl border border-slate-200 bg-white shadow-sm">
                 <div class="border-b border-slate-200 px-5 py-4">
@@ -218,4 +201,4 @@
             </div>
         </section>
     </div>
-</x-app-layout>
+</x-layouts.admin>

@@ -2,10 +2,10 @@
     <x-slot name="header">
         <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                <h2 class="text-xl font-semibold text-slate-900">
                     {{ $instrument->spec?->builder?->name ?? 'Instrument' }} {{ $instrument->spec?->model ?? '' }}
                 </h2>
-                <p class="text-sm text-gray-600">
+                <p class="text-sm text-slate-500">
                     {{ $instrument->spec?->instrumentType?->name ?? 'Instrument' }}
                 </p>
             </div>
@@ -17,169 +17,79 @@
         </div>
     </x-slot>
 
-    <div class="py-10">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
-            @if (session('success'))
-                <div class="rounded-md border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
-                    {{ session('success') }}
-                </div>
-            @endif
+    <x-ui.card>
+        <div class="grid grid-cols-1 gap-10 lg:grid-cols-2">
+            <x-instruments.image-gallery :instrument="$instrument" />
 
-            <div class="bg-white shadow-sm sm:rounded-lg">
-                <div class="p-8 grid grid-cols-1 lg:grid-cols-2 gap-10">
-                    <div>
-                        <div class="rounded-xl overflow-hidden bg-gray-100">
-                            @if ($instrument->getFirstMediaUrl('gallery', 'preview'))
-                                <img
-                                    src="{{ $instrument->getFirstMediaUrl('gallery', 'preview') }}"
-                                    alt="{{ trim(($instrument->spec?->builder?->name ?? '') . ' ' . ($instrument->spec?->model ?? 'Instrument')) }}"
-                                    class="w-full h-[420px] object-cover"
-                                >
-                            @else
-                                <div class="w-full h-[420px] flex items-center justify-center text-gray-500">
-                                    No image available
-                                </div>
-                            @endif
-                        </div>
+            <div class="space-y-6">
+                <div>
+                    <p class="text-sm uppercase tracking-wide text-slate-500">
+                        {{ $instrument->spec?->instrumentFamily?->name ?? 'Instrument Family' }}
+                    </p>
 
-                        @if ($instrument->getMedia('gallery')->count() > 1)
-                            <div class="mt-4 grid grid-cols-4 gap-3">
-                                @foreach ($instrument->getMedia('gallery') as $media)
-                                    <div class="rounded-lg overflow-hidden bg-gray-100">
-                                        <img
-                                            src="{{ $media->getUrl('thumb') }}"
-                                            alt="Instrument gallery image"
-                                            class="w-full h-24 object-cover"
-                                        >
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
+                    <h1 class="mt-1 text-3xl font-bold text-slate-900">
+                        {{ $instrument->spec?->builder?->name ?? 'Unknown Builder' }}
+                        {{ $instrument->spec?->model ?? '' }}
+                    </h1>
 
-                    <div class="space-y-6">
-                        <div>
-                            <p class="text-sm uppercase tracking-wide text-gray-500">
-                                {{ $instrument->spec?->instrumentFamily?->name ?? 'Instrument Family' }}
-                            </p>
+                    <p class="mt-2 text-slate-600">
+                        {{ $instrument->spec?->instrumentType?->name ?? 'Type not set' }}
+                    </p>
 
-                            <h1 class="mt-1 text-3xl font-bold text-gray-900">
-                                {{ $instrument->spec?->builder?->name ?? 'Unknown Builder' }}
-                                {{ $instrument->spec?->model ?? '' }}
-                            </h1>
-
-                            <p class="mt-2 text-gray-600">
-                                {{ $instrument->spec?->instrumentType?->name ?? 'Type not set' }}
-                            </p>
-
-                            <div class="mt-4 flex flex-wrap items-center gap-3">
-                                <p class="text-2xl font-bold text-gray-900">
-                                    {{ number_format((float) $instrument->price, 2) }}
-                                </p>
-
-                                @include('storefront.inventory.partials.wishlist-button', ['instrument' => $instrument])
-
-                                @auth
-                                    <a href="{{ route('storefront.inquiries.create', $instrument) }}"
-                                        class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
-                                        Send inquiry
-                                    </a>
-
-                                    @if ($instrument->stock_status === \App\Models\Instrument::AVAILABLE)
-                                        <a href="{{ route('storefront.reservations.create', $instrument) }}"
-                                            class="inline-flex items-center rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800">
-                                            Request reservation
-                                        </a>
-                                    @endif
-                                @else
-                                    <a href="{{ route('login') }}"
-                                        class="inline-flex items-center rounded-md border border-indigo-200 px-4 py-2 text-sm font-medium text-indigo-700 hover:bg-indigo-50">
-                                        Log in to inquire
-                                    </a>
-                                @endauth
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                            <div class="rounded-lg bg-gray-50 p-4">
-                                <p class="text-gray-500">Condition</p>
-                                <p class="mt-1 font-medium text-gray-900 capitalize">{{ $instrument->condition }}</p>
-                            </div>
-
-                            <div class="rounded-lg bg-gray-50 p-4">
-                                <p class="text-gray-500">Stock Status</p>
-                                <p class="mt-1 font-medium text-gray-900 capitalize">{{ $instrument->stock_status }}</p>
-                            </div>
-
-                            <div class="rounded-lg bg-gray-50 p-4">
-                                <p class="text-gray-500">Year Made</p>
-                                <p class="mt-1 font-medium text-gray-900">
-                                    {{ $instrument->year_made ? $instrument->year_made->format('Y') : 'N/A' }}
-                                </p>
-                            </div>
-
-                            <div class="rounded-lg bg-gray-50 p-4">
-                                <p class="text-gray-500">Number of Strings</p>
-                                <p class="mt-1 font-medium text-gray-900">
-                                    {{ $instrument->spec?->num_strings ?? 'N/A' }}
-                                </p>
-                            </div>
-
-                            <div class="rounded-lg bg-gray-50 p-4">
-                                <p class="text-gray-500">Back Wood</p>
-                                <p class="mt-1 font-medium text-gray-900">
-                                    {{ $instrument->spec?->backWood?->name ?? 'N/A' }}
-                                </p>
-                            </div>
-
-                            <div class="rounded-lg bg-gray-50 p-4">
-                                <p class="text-gray-500">Top Wood</p>
-                                <p class="mt-1 font-medium text-gray-900">
-                                    {{ $instrument->spec?->topWood?->name ?? 'N/A' }}
-                                </p>
-                            </div>
-
-                            <div class="rounded-lg bg-gray-50 p-4">
-                                <p class="text-gray-500">Style</p>
-                                <p class="mt-1 font-medium text-gray-900">
-                                    {{ $instrument->spec?->style ?? 'N/A' }}
-                                </p>
-                            </div>
-
-                            <div class="rounded-lg bg-gray-50 p-4">
-                                <p class="text-gray-500">Finish</p>
-                                <p class="mt-1 font-medium text-gray-900">
-                                    {{ $instrument->spec?->finish ?? 'N/A' }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-900">Description</h3>
-                            <p class="mt-2 text-gray-700 leading-7">
-                                {{ $instrument->spec?->description ?: 'No description available for this instrument yet.' }}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            @if ($related->count())
-                <div class="bg-white shadow-sm sm:rounded-lg">
-                    <div class="p-8">
-                        <h3 class="text-2xl font-bold text-gray-900">Related Instruments</h3>
-                        <p class="mt-2 text-gray-600">
-                            More instruments from the same family.
+                    <div class="mt-4 flex flex-wrap items-center gap-3">
+                        <p class="text-2xl font-bold text-slate-900">
+                            ${{ number_format((float) $instrument->price, 2) }}
                         </p>
 
-                        <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-                            @foreach ($related as $relatedInstrument)
-                                @include('storefront.instruments._card', ['instrument' => $relatedInstrument])
-                            @endforeach
-                        </div>
+                        <x-ui.badge :status="$instrument->stock_status" />
+                        <x-ui.badge variant="neutral">{{ ucfirst($instrument->condition) }}</x-ui.badge>
+                    </div>
+
+                    <div class="mt-5 flex flex-wrap items-center gap-3">
+                        @include('storefront.inventory.partials.wishlist-button', ['instrument' => $instrument])
+
+                        @auth
+                            <x-ui.button href="{{ route('storefront.inquiries.create', $instrument) }}">
+                                Send inquiry
+                            </x-ui.button>
+
+                            @if ($instrument->stock_status === \App\Models\Instrument::AVAILABLE)
+                                <x-ui.button href="{{ route('storefront.reservations.create', $instrument) }}" variant="secondary">
+                                    Request reservation
+                                </x-ui.button>
+                            @endif
+                        @else
+                            <x-ui.button href="{{ route('login') }}" variant="secondary">
+                                Log in to inquire
+                            </x-ui.button>
+                        @endauth
                     </div>
                 </div>
-            @endif
+
+                <x-instruments.spec-table :instrument="$instrument" />
+
+                <div>
+                    <h3 class="text-lg font-semibold text-slate-900">Description</h3>
+                    <p class="mt-2 text-slate-700 leading-7">
+                        {{ $instrument->spec?->description ?: 'No description available for this instrument yet.' }}
+                    </p>
+                </div>
+            </div>
         </div>
-    </div>
+    </x-ui.card>
+
+    @if ($related->count())
+        <x-ui.card>
+            <h3 class="text-2xl font-bold text-slate-900">Related Instruments</h3>
+            <p class="mt-2 text-slate-600">
+                More instruments from the same family.
+            </p>
+
+            <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+                @foreach ($related as $relatedInstrument)
+                    <x-instruments.card :instrument="$relatedInstrument" />
+                @endforeach
+            </div>
+        </x-ui.card>
+    @endif
 </x-app-layout>

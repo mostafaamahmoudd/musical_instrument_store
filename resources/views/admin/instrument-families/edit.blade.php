@@ -1,19 +1,16 @@
-<x-app-layout>
+<x-layouts.admin>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Instrument Family</h2>
+        <div>
+            <h2 class="text-xl font-semibold text-slate-900">Edit Instrument Family</h2>
+            <p class="text-sm text-slate-500">Update the family details.</p>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    <form method="POST" action="{{ route('admin.instrument-families.update', $instrumentFamily) }}">
-                        @csrf
-                        @method('PUT')
-                        @include('admin.instrument-families._form', ['submitLabel' => 'Update Family'])
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+    <x-ui.card>
+        <form method="POST" action="{{ route('admin.instrument-families.update', $instrumentFamily) }}">
+            @csrf
+            @method('PUT')
+            @include('admin.instrument-families._form', ['submitLabel' => 'Update Family'])
+        </form>
+    </x-ui.card>
+</x-layouts.admin>

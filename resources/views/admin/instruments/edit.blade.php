@@ -1,29 +1,16 @@
-<x-app-layout>
+<x-layouts.admin>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Instrument</h2>
+        <div>
+            <h2 class="text-xl font-semibold text-slate-900">Edit Instrument</h2>
+            <p class="text-sm text-slate-500">Update instrument details and inventory settings.</p>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
-            @if (session('success'))
-                <div class="mb-4 rounded-lg bg-green-100 px-4 py-3 text-sm text-green-800">
-                    {{ session('success') }}
-                </div>
-            @endif
-
-            <div class="bg-white shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    <form method="POST" action="{{ route('admin.instruments.update', $instrument) }}"
-                        enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-
-                        @include('admin.instruments._form', [
-                            'submitLabel' => 'Update Instrument',
-                        ])
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+    <x-ui.card>
+        <form method="POST" action="{{ route('admin.instruments.update', $instrument) }}" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            @include('admin.instruments._form', ['submitLabel' => 'Update Instrument'])
+        </form>
+    </x-ui.card>
+</x-layouts.admin>
