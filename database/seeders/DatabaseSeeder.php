@@ -22,6 +22,11 @@ class DatabaseSeeder extends Seeder
             BuilderSeeder::class,
             WoodSeeder::class,
             InstrumentSeeder::class,
+            WishlistSeeder::class,
+            InquirySeeder::class,
+            ReservationSeeder::class,
+            PriceHistorySeeder::class,
+            AuditLogSeeder::class,
         ]);
     }
 }

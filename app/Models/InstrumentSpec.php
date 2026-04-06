@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Models\Relations\InstrumentSpecRelations;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class InstrumentSpec extends Model
 {
+    use HasFactory;
     use InstrumentSpecRelations;
 
     /**

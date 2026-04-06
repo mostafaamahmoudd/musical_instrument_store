@@ -6,9 +6,11 @@ use App\Models\Concerns\HasAuditLogs;
 use App\Models\Relations\ReservationRelations;
 use App\Models\Scopes\ReservationScopes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Reservation extends Model
 {
+    use HasFactory;
     use HasAuditLogs;
     use ReservationRelations;
     use ReservationScopes;

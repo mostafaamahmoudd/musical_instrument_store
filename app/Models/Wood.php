@@ -5,9 +5,11 @@ namespace App\Models;
 use App\Models\Concerns\HasAuditLogs;
 use App\Models\Relations\WoodRelations;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Wood extends Model
 {
+    use HasFactory;
     use HasAuditLogs;
     use WoodRelations;
 

@@ -6,9 +6,11 @@ use App\Models\Concerns\HasAuditLogs;
 use App\Models\Relations\InquiryRelations;
 use App\Models\Scopes\InquiryScopes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Inquiry extends Model
 {
+    use HasFactory;
     use HasAuditLogs;
     use InquiryRelations;
     use InquiryScopes;

@@ -5,9 +5,11 @@ namespace App\Models;
 use App\Models\Concerns\HasAuditLogs;
 use App\Models\Relations\InstrumentFamilyRelations;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class InstrumentFamily extends Model
 {
+    use HasFactory;
     use HasAuditLogs;
     use InstrumentFamilyRelations;
 

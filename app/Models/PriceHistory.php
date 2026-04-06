@@ -4,9 +4,11 @@ namespace App\Models;
 
 use App\Models\Relations\PriceHistoryRelations;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PriceHistory extends Model
 {
+    use HasFactory;
     use PriceHistoryRelations;
 
     /**
