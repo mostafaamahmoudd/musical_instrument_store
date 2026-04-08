@@ -8,6 +8,7 @@ use App\Models\Instrument;
 use App\Models\InstrumentFamily;
 use App\Models\InstrumentType;
 use App\Models\Reservation;
+use App\Models\User;
 use App\Models\Wood;
 use App\Observers\AuditableObserver;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -39,6 +40,7 @@ class AppServiceProvider extends ServiceProvider
             'instrument_family' => InstrumentFamily::class,
             'inquiry' => Inquiry::class,
             'reservation' => Reservation::class,
+            'user' => User::class,
         ]);
 
         $observer = AuditableObserver::class;
