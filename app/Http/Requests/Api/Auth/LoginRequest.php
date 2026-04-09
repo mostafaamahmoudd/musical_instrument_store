@@ -24,7 +24,7 @@ class LoginRequest extends ApiFormRequest
     {
         return [
             'email' => ['nullable', 'string', 'email'],
-            'phone' => ['nullable', 'string', 'phone'],
+            'phone' => ['nullable', 'string', 'max:20'],
             'password' => ['required', 'string', 'min:8'],
         ];
     }

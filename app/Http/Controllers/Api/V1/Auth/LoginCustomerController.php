@@ -56,8 +56,6 @@ class LoginCustomerController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        RateLimiter::clear($key);
-
         return $this->successResponse('Login successful.', [
             'user' => CustomerResource::make($user),
             'access_token' => $token,
