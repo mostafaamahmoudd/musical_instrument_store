@@ -22,9 +22,18 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     });
 
     Route::middleware('auth:sanctum')->group(function () {
+        // instrument routes
         Route::get('/instruments', [InstrumentController::class, 'index'])
             ->name('instruments.index');
         Route::get('/instruments/{instrument}', [InstrumentController::class, 'show'])
             ->name('instruments.show');
+
+        // wishlist routes
+        Route::get('/wishlist', [\App\Http\Controllers\Api\V1\WishlistController::class, 'index'])
+            ->name('wishlist.index');
+        Route::post('/wishlist/{instrument}', [\App\Http\Controllers\Api\V1\WishlistController::class, 'store'])
+            ->name('wishlist.store');
+        Route::delete('/wishlist/{instrument}', [\App\Http\Controllers\Api\V1\WishlistController::class, 'destroy'])
+            ->name('wishlist.destroy');
     });
 });
