@@ -34,7 +34,7 @@ class ReservationController extends Controller
 
     public function create(Request $request, Instrument $instrument)
     {
-        $this->ensureReservable($instrument);
+        ensureReservable($instrument);
 
         $instrument->load([
             'media',
@@ -51,7 +51,7 @@ class ReservationController extends Controller
 
     public function store(ReservationRequest $request, Instrument $instrument)
     {
-        $this->ensureReservable($instrument);
+        ensureReservable($instrument);
 
         $existing = Reservation::query()
             ->where('user_id', auth()->id())
@@ -79,13 +79,5 @@ class ReservationController extends Controller
         return redirect()
             ->route('storefront.instruments.show', $instrument)
             ->with('success', 'Your reservation request has been submitted.');
-    }
-
-    protected function ensureReservable(Instrument $instrument): void
-    {
-        abort_unless(
-            $instrument->published_at && $instrument->stock_status === 'available',
-            404
-        );
     }
 }

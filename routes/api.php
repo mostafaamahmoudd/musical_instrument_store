@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\Auth\RegisterCustomerController;
 use App\Http\Controllers\Api\V1\HealthController;
 use App\Http\Controllers\Api\V1\InquiryController;
 use App\Http\Controllers\Api\V1\InstrumentController;
+use App\Http\Controllers\Api\V1\ReservationController;
 use App\Http\Controllers\Api\V1\WishlistController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,5 +47,12 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::get('/inquiries/{inquiry}', [InquiryController::class, 'show'])
             ->name('inquiries.show');
 
+        // reservation routes
+        Route::get('/reservations', [ReservationController::class, 'index'])
+            ->name('reservations.index');
+        Route::get('/reservations/{reservation}', [ReservationController::class, 'show'])
+            ->name('reservations.show');
+        Route::post('/instruments/{instrument}/reservations', [ReservationController::class, 'store'])
+            ->name('reservations.store');
     });
 });
