@@ -65,4 +65,27 @@ class InstrumentController extends Controller
             'Customer instrument fetched successfully.'
         );
     }
+
+    public function featured()
+    {
+        $instruments = Instrument::query()
+            ->ofVisible()
+            ->ofFeatured()
+            ->with([
+                'spec.instrumentFamily',
+                'spec.builder',
+                'spec.instrumentType',
+                'spec.backWood',
+                'spec.topWood',
+                'media',
+            ])
+            ->latest('published_at')
+            ->take(10)
+            ->get();
+
+        return $this->respondWithCollection(
+            InstrumentResource::collection($instruments),
+            'Customer featured instruments fetched successfully.',
+        );
+    }
 }

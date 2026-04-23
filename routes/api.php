@@ -32,6 +32,8 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             ->name('instruments.show');
         Route::post('/instruments/{instrument}/inquiries', [InquiryController::class, 'store'])
             ->name('instruments.inquiries.store');
+        Route::get('/featured', [InstrumentController::class, 'featured'])
+            ->name('instruments.featured');
 
         // wishlist routes
         Route::get('/wishlist', [WishlistController::class, 'index'])
